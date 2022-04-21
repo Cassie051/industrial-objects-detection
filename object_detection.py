@@ -22,10 +22,12 @@ class ObjectDetection(BaseSample):
             carb.log_error("Could not find nucleus server with /Isaac folder")
         asset_path = nucleus_server +"/Isaac/Environments/Simple_Warehouse/warehouse.usd" # warehouse_multiple_shelves.usd
         add_reference_to_stage(usd_path=asset_path, prim_path="/World/Warehouse")
-        asset_path = nucleus_server +"/Isaac/Environments/Simple_Warehouse/Props/SM_PaletteA_01.usd" # warehouse_multiple_shelves.usd
-        self._pallet = add_reference_to_stage(usd_path=asset_path, prim_path="/World/Palette", position=np.array([0, 30, 0]))
-        asset_path = nucleus_server +"/Isaac/Environments/Simple_Warehouse/Props/SM_PushcartA_02.usd" # warehouse_multiple_shelves.usd
-        self._pushcart = add_reference_to_stage(usd_path=asset_path, prim_path="/World/Pushcart", position=np.array([0, 30, 0]))
+        asset_path = nucleus_server +"/Isaac/Environments/Simple_Warehouse/Props/SM_PaletteA_01.usd"
+        add_reference_to_stage(usd_path=asset_path, prim_path="/World/Palette")
+        self._pallet = self.world.scene.add(Robot(prim_path="/World/Palette", name="palette"))
+        # asset_path = nucleus_server +"/Isaac/Environments/Simple_Warehouse/Props/SM_PushcartA_02.usd"
+        # add_reference_to_stage(usd_path=asset_path, prim_path="/World/Pushcart"))
+        # self._pushcart = self.world.scene.add(Robot(prim_path="/World/Pushcart", name="pushcart"))
         self._jetbot = self.world.scene.add(Jetbot(prim_path="/World/jetbot",
                                         name="fancy_jetbot",
                                         position=np.array([0, 30, 0])))
@@ -33,7 +35,7 @@ class ObjectDetection(BaseSample):
 
     async def setup_post_load(self):
         self.rand_object_position(self._pallet)
-        self.rand_object_position(self._pushcart)
+        # self.rand_object_position(self._pushcart)
         self._world.add_physics_callback("sending_actions", callback_fn=self.send_robot_actions)
         self._my_controller = WheelBasePoseController(name="cool_controller",
                                                     open_loop_wheel_controller=DifferentialController(name="open_loop_controller"),
