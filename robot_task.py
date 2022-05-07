@@ -9,7 +9,7 @@ class RobotTask(BaseTask):
         name
     ):
         super().__init__(name=name, offset=None)
-        self.goals_list = [[300, 0], [300, 500]]
+        self.goals_list = [[300, 0], [300, 500], [-300, 500], [-300, 0]]
         self._task_event = 0
         self._accuracy = 20
         return
@@ -47,6 +47,12 @@ class RobotTask(BaseTask):
             if diff_x + diff_y < self._accuracy:
                 self._task_event += 1
         elif self._task_event == 1:
+            if diff_x + diff_y < self._accuracy:
+                self._task_event += 1
+        elif self._task_event == 2:
+            if diff_x + diff_y < self._accuracy:
+                self._task_event += 1
+        elif self._task_event == 3:
             if diff_x + diff_y < self._accuracy:
                 self._task_event = 0
         return
