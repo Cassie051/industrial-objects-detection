@@ -19,25 +19,25 @@ class ObjectDetection(BaseSample):
         world = self.get_world()
         world.stage_units_in_meters=0.01
         world.add_task(RobotTask(name="awesome_task"))
-        world.scene.add_default_ground_plane()
+        # world.scene.add_default_ground_plane()
         result, nucleus_server = find_nucleus_server()
         if result is False:
             carb.log_error("Could not find nucleus server with /Isaac folder")
-        # asset_path = nucleus_server +"/Isaac/Environments/Simple_Warehouse/warehouse.usd" # warehouse_multiple_shelves.usd
-        # add_reference_to_stage(usd_path=asset_path, prim_path="/World/Warehouse")
-        asset_path = nucleus_server +"/Isaac/Environments/Simple_Warehouse/Props/SM_PaletteA_01.usd"
-        add_reference_to_stage(usd_path=asset_path, prim_path="/World/Palette")
-        self._pallet = world.scene.add(GeometryPrim(prim_path="/World/Palette", name="palette"))
-        asset_path = nucleus_server +"/Isaac/Environments/Simple_Warehouse/Props/SM_PushcartA_02.usd"
-        add_reference_to_stage(usd_path=asset_path, prim_path="/World/Pushcart")
-        self._pushcart = world.scene.add(GeometryPrim(prim_path="/World/Pushcart", name="pushcart"))
+        asset_path = nucleus_server +"/Isaac/Environments/Simple_Warehouse/warehouse_multiple_shelves.usd" # warehouse.usd 
+        add_reference_to_stage(usd_path=asset_path, prim_path="/World/Warehouse")
+        # asset_path = nucleus_server +"/Isaac/Environments/Simple_Warehouse/Props/SM_PaletteA_01.usd"
+        # add_reference_to_stage(usd_path=asset_path, prim_path="/World/Palette")
+        # self._pallet = world.scene.add(GeometryPrim(prim_path="/World/Palette", name="palette"))
+        # asset_path = nucleus_server +"/Isaac/Environments/Simple_Warehouse/Props/SM_PushcartA_02.usd"
+        # add_reference_to_stage(usd_path=asset_path, prim_path="/World/Pushcart")
+        # self._pushcart = world.scene.add(GeometryPrim(prim_path="/World/Pushcart", name="pushcart"))
         return
 
     async def setup_post_load(self):
         self._world = self.get_world()
         self.set_camera()
-        self.rand_object_position(self._pallet)
-        self.rand_object_position(self._pushcart)
+        # self.rand_object_position(self._pallet)
+        # self.rand_object_position(self._pushcart)
         task_params = self._world.get_task("awesome_task").get_params()
         self._jetbot = self._world.scene.get_object(task_params["jetbot_name"]["value"])
         self._my_controller = WheelBasePoseController(name="cool_controller",
@@ -71,7 +71,7 @@ class ObjectDetection(BaseSample):
         viewport_handle = omni.kit.viewport.get_viewport_interface().create_instance()
         viewport_window = omni.kit.viewport.get_viewport_interface().get_viewport_window(viewport_handle)
         viewport_window.set_active_camera(camera_path)
-        viewport_window.set_texture_resolution(128, 128)
+        viewport_window.set_texture_resolution(640, 640)
         viewport_window.set_window_pos(1000, 400)
         viewport_window.set_window_size(420, 420)
         self.viewport_window = viewport_window

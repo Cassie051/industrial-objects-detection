@@ -9,7 +9,7 @@ class RobotTask(BaseTask):
         name
     ):
         super().__init__(name=name, offset=None)
-        self.goals_list = [[300, 0], [300, 500], [-300, 500], [-300, 0]]
+        self.goals_list = [[300, 0], [300, 1300], [300, -100]]
         self._task_event = 0
         self._accuracy = 20
         return
@@ -43,18 +43,12 @@ class RobotTask(BaseTask):
         current_jetbot_position, _ = self._jetbot.get_world_pose()
         diff_x = np.abs(current_jetbot_position[0] - self.goals_list[self._task_event][0])
         diff_y = np.abs(current_jetbot_position[1] - self.goals_list[self._task_event][1])
-        if self._task_event == 0:
-            if diff_x + diff_y < self._accuracy:
-                self._task_event += 1
-        elif self._task_event == 1:
-            if diff_x + diff_y < self._accuracy:
-                self._task_event += 1
-        elif self._task_event == 2:
-            if diff_x + diff_y < self._accuracy:
-                self._task_event += 1
-        elif self._task_event == 3:
+        if self._task_event == len(self.goals_list)-1:
             if diff_x + diff_y < self._accuracy:
                 self._task_event = 0
+        else:
+            if diff_x + diff_y < self._accuracy:
+                self._task_event += 1
         return
 
     def post_reset(self):
